@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -euo pipefail
+IFS=$'\n\t'
+
+echo Building project...
+go build -ldflags="-s -w"
+echo Success

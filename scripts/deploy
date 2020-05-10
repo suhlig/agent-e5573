@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -euo pipefail
+IFS=$'\n\t'
+
+PROGRAM=agent-e5573
+PROGRAM_XZ="$PROGRAM.xz"
+
+echo "Compressing $PROGRAM to $PROGRAM_XZ"
+xz --force --keep -9 --verbose "$PROGRAM"
+
+echo "Copying $PROGRAM_XZ to $AGENT_E5573_HOST:"
+scp "$PROGRAM_XZ" "$AGENT_E5573_HOST":
+ssh "$AGENT_E5573_HOST" "xz --decompress --force "$PROGRAM_XZ""

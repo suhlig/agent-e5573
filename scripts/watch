@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -euo pipefail
+IFS=$'\n\t'
+
+cleanup () {
+  kill -s SIGTERM $$
+  echo Killed
+  exit 1
+}
+
+trap cleanup SIGINT SIGTERM
+
+echo "Build and run will start with the first file change."
+
+while [ 1 ]; do
+  find . -name '*.go' -type f | entr -p bash -c "scripts/build" && "scripts/deploy" && "scripts/run"
+done

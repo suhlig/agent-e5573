@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -euo pipefail
+IFS=$'\n\t'
+
+PROGRAM=agent-e5573
+PROGRAM_XZ="$PROGRAM.xz"
+
+echo "Running $PROGRAM on $AGENT_E5573_HOST:"
+ssh "$AGENT_E5573_HOST" "INFLUXDB_PASSWORD=$INFLUXDB_PASSWORD" ./"$PROGRAM" \
+                          --e5573-url http://192.168.8.1 \
+                          --influxdb-url $INFLUXDB_URL \
+                          --influxdb-database e5573 \
+                          --influxdb-user shop --verbose
