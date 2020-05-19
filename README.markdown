@@ -1,4 +1,4 @@
-Agent E5573 collects some stats from the Huawei E5573 wireless router ("MiFi") and publishes it to an InfluxDB.
+`Agent E5573` collects some stats from the Huawei E5573 wireless router ("MiFi") and publishes them to an InfluxDB instance.
 
 # Synopsis
 
@@ -11,10 +11,10 @@ $ agent-e5573 \
   --influxdb-user example.com
 ```
 
-`TODO` Run it with `--verbose` and it will print its the stats to `STDOUT`:
+Run it with `--verbose` and it will print its the stats to `STDOUT`:
 
 ```command
-$ $ agent-e5573 \
+$ agent-e5573 \
   --verbose \
   --e5573-url http://192.168.8.1 \
   --influxdb-url https://influxdb.example.com \
@@ -30,13 +30,14 @@ Downloaded: 93.64 MiB
 Uploaded 98.70 MiB
 ```
 
-`TODO` Run it without an InfluxDB URL, and it will just print the stats without attempting to write to an InfluxDB.
+Run it without an InfluxDB URL, and it will just print the stats without attempting to write to an InfluxDB.
 
-`TODO` Use `--json` to print the same information as a JSON struct:
+TODO Use `--json` to print the same information as a JSON struct:
 
 ```command
-$ $ agent-e5573 --json --e5573-url http://192.168.8.1
+$ agent-e5573 --json --e5573-url http://192.168.8.1
 {
+  "version": "v1.2.3",
   "timestamp": "2020-05-11T19:12:21+02:00",
   "system": {
     "battery": 1.00,
@@ -65,4 +66,38 @@ We want to publish the stats in regular intervals. The following choices come to
 1. Provide data to the [Telegraf exec plugin](https://community.influxdata.com/t/data-collection-question-best-way-to-feed-from-a-stats-catcher/11964)
 1. Act as Prometheus exporter and use the [Telegraf Prometheus plugin](https://community.influxdata.com/t/own-telegraf-plugin-need-to-scrape-metrics-from-prometheus-clients/11878)
 
-Since we do not publish more than once a minute, the granularity of systemd timers or cron seems to be sufficient.
+Since we do not publish more than once a minute, the granularity of systemd timers or cron seems to be sufficient. And it helps keeping things simple.
+
+# Development
+
+1. Set the following environment variables:
+
+    ```command
+    $ export AGENT_E5573_HOST=pi.example.com # where the agent will be running
+    $ export INFLUXDB_URL=https://influxdb.example.com:443 # where to push data
+    $ export INFLUXDB_PASSWORD="t0ps3cr3t" # top secret
+    ```
+
+1. Optionally, if your target system is a Raspberry Pi <= 3, set the following variables on the build machine:
+
+    ```command
+    $ export GOOS=linux
+    $ export GOARCH=arm
+    $ export GOARM=5
+    ```
+
+1. Run the `setup` script once:
+
+    ```command
+    $ scripts/setup
+    ```
+
+1. Run this combination of scripts in order to `build`, `deploy` and `run` the agent:
+
+    ```command
+    $ scripts/build && scripts/deploy && scripts/run
+    ```
+
+    If you want to iterate quickly and build, deploy and run on each save, run `scripts/watch`.
+
+1. Optionally, improve the code and supply a pull request.

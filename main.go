@@ -67,22 +67,6 @@ func main() {
 	downloadedMiB := traffic.DownloadedMB
 	uploadedMiB := traffic.UploadedMB
 
-	// TODO --json
-	// "version": "0.2.4",
-	// "system": {
-	//   "battery": 1.00,
-	//   "wifi-users": 1
-	// },
-	// "network": {
-	//   "mode": "4G/LTE Enabled",
-	//   "signal": 0.20
-	// },
-	// "traffic": {
-	//   "connection-time": { "value": 49764, "unit": "s" },
-	//   "downloaded": { "value": 93.64, "unit": "MiB" },
-	//   "uploaded": { "value": 98.70, "unit": "MiB" }
-	// }
-
 	if *verbose == true {
 		fmt.Println("Version: ", versionNumber)
 		fmt.Println("Timestamp: ", time.Now().Format(time.RFC3339))
