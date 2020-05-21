@@ -6,7 +6,6 @@
 
   vars:
     program_name: agent-e5573
-    program_version: unknown
 
   tasks:
   - name: Program binary is up-to-date
@@ -44,3 +43,40 @@
       enabled: true
     tags: [ systemd, timer ]
 
+  - name: Register version of the deployed binary
+    command: "/usr/local/bin/{{ program_name }} --version"
+    register: program_version
+    tags: [ version ]
+
+  - name: System packages are installed
+    apt:
+      name:
+        - python-pip
+        - python-setuptools
+      state: present
+      update_cache: true
+    tags: apt, pip, python, influxdb
+
+  - name: Python modules are present
+    pip:
+      name:
+      - influxdb
+    tags: [ influxdb, python, pip ]
+
+  - name: Write deployment event info
+    influxdb_write:
+      hostname: "{{ influxdb_host }}"
+      ssl: "{{ influxdb_tls }}"
+      use_udp: false
+      udp_port: 4444
+      port: "{{ influxdb_port }}"
+      username: "{{ influxdb_user }}"
+      password: "{{ influxdb_user_password }}"
+      database_name: "{{influxdb_database}}"
+      data_points:
+        - measurement: events
+          tags:
+            host: "{{ inventory_hostname }}"
+          fields:
+            title: "Deployment of {{ program_name }} {{ program_version.stdout }}"
+    tags: [ influxdb, events ]
