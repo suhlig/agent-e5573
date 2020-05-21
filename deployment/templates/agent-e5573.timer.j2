@@ -1,0 +1,9 @@
+[Unit]
+Description=Writes E5573 stats to InfluxDB every minute
+After=network-online.target
+
+[Timer]
+OnUnitActiveSec=1m
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,46 @@
+---
+- name: Deploy the agent
+  hosts: all
+  become: true
+  gather_facts: false
+
+  vars:
+    program_name: agent-e5573
+    program_version: unknown
+
+  tasks:
+  - name: Program binary is up-to-date
+    copy:
+      src: "{{ playbook_dir }}/../{{ program_name }}"
+      dest: "/usr/local/bin/{{ program_name }}"
+      mode: "0755"
+    tags: [ copy, binary ]
+
+  - name: Systemd service is present
+    template:
+      src: "{{ program_name }}.timer.j2"
+      dest: "/etc/systemd/system/{{ program_name }}.timer"
+      mode: "0664"
+    tags: systemd
+
+  - name: Systemd timer is present
+    template:
+      src: "{{ program_name }}.service.j2"
+      dest: "/etc/systemd/system/{{ program_name }}.service"
+      mode: "0664"
+    tags: systemd
+
+  - name: Service is started and enabled
+    systemd:
+      name: "{{ program_name }}.service"
+      state: started
+      enabled: true
+    tags: [ systemd, service ]
+
+  - name: Timer is started and enabled
+    systemd:
+      name: "{{ program_name }}.timer"
+      state: started
+      enabled: true
+    tags: [ systemd, timer ]
+
