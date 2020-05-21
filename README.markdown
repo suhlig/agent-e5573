@@ -1,4 +1,4 @@
-`Agent E5573` collects some stats from the Huawei E5573 wireless router ("MiFi") and publishes them to an InfluxDB instance.
+`Agent E5573` collects some stats from the [Huawei E5573](https://en.wikipedia.org/wiki/Huawei_E5#Huawei_E5573) wireless router ("MiFi") and publishes them to an InfluxDB instance.
 
 # Synopsis
 
@@ -32,29 +32,6 @@ Uploaded 98.70 MiB
 
 Run it without an InfluxDB URL, and it will just print the stats without attempting to write to an InfluxDB.
 
-TODO Use `--json` to print the same information as a JSON struct:
-
-```command
-$ agent-e5573 --json --e5573-url http://192.168.8.1
-{
-  "version": "v1.2.3",
-  "timestamp": "2020-05-11T19:12:21+02:00",
-  "system": {
-    "battery": 1.00,
-    "wifi-users": 1
-  },
-  "network": {
-    "mode": "4G/LTE Enabled",
-    "signal": 0.20
-  },
-  "traffic": {
-    "connection-time": { "value": 49764, "unit": "s" },
-    "downloaded": { "value": 93.64, "unit": "MiB" },
-    "uploaded": { "value": 98.70, "unit": "MiB" }
-  }
-}
-```
-
 # System Design Choices
 
 We want to publish the stats in regular intervals. The following choices come to mind:
@@ -69,6 +46,8 @@ We want to publish the stats in regular intervals. The following choices come to
 Since we do not publish more than once a minute, the granularity of systemd timers or cron seems to be sufficient. And it helps keeping things simple.
 
 # Development
+
+Regular deployment is done with Ansible. For fast iteration, the following approach can be used:
 
 1. Set the following environment variables:
 
