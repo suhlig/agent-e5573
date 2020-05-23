@@ -10,7 +10,7 @@ import (
 	"github.com/tombuildsstuff/huawei-e5573-mifi-sdk-go/mifi"
 )
 
-var versionNumber = "0.0.2"
+var versionNumber = "0.0.3"
 var e5573URL = flag.String("e5573-url", "http://192.168.8.1", "The endpoint of the E5573 device")
 var showVersion = flag.Bool("version", false, "Show the Application Version")
 var verbose = flag.Bool("verbose", false, "Produce verbose output")
@@ -118,33 +118,21 @@ func main() {
 
 func addSystemPoint(bp influx.BatchPoints, battery float64, wifiUsers int, tags map[string]string) error {
 	fields := map[string]interface{}{"battery": battery, "wifi_users": wifiUsers}
-	pt, err := influx.NewPoint("system", tags, fields)
-
-	if err != nil {
-		return err
-	}
-
-	bp.AddPoint(pt)
-
-	return nil
+	return addPoint(bp, "system", tags, fields)
 }
 
 func addNetworkPoint(bp influx.BatchPoints, mode string, signal float64, tags map[string]string) error {
 	fields := map[string]interface{}{"mode": mode, "signal": signal}
-	pt, err := influx.NewPoint("network", tags, fields)
-
-	if err != nil {
-		return err
-	}
-
-	bp.AddPoint(pt)
-
-	return nil
+	return addPoint(bp, "network", tags, fields)
 }
 
 func addTrafficPoint(bp influx.BatchPoints, connectionTime int, downloadedMiB, uploadedMiB float32, tags map[string]string) error {
 	fields := map[string]interface{}{"connection_time": connectionTime, "downloaded": downloadedMiB, "uploaded": uploadedMiB}
-	pt, err := influx.NewPoint("traffic", tags, fields)
+	return addPoint(bp, "traffic", tags, fields)
+}
+
+func addPoint(bp influx.BatchPoints, name string, tags map[string]string, fields map[string]interface{}) error {
+	pt, err := influx.NewPoint(name, tags, fields)
 
 	if err != nil {
 		return err
