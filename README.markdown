@@ -62,7 +62,7 @@ Regular deployment is done with Ansible. For fast iteration, the following appro
     ```command
     $ export GOOS=linux
     $ export GOARCH=arm
-    $ export GOARM=5
+    $ export GOARM=7
     ```
 
 1. Run the `setup` script once:
