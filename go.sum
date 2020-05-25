@@ -165,6 +165,8 @@ github.com/stretchr/testify v1.2.0/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXf
 github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXfy6kDkUVs=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
 github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81PSLYec5m4=
+github.com/suhlig/huawei-e5573-mifi-sdk-go v0.0.0-20200525213652-51d51b746a62 h1:BrBeoiFVEqKluKdXF1K2Jnru0w4lHQ1iLn+o9PwSv5Y=
+github.com/suhlig/huawei-e5573-mifi-sdk-go v0.0.0-20200525213652-51d51b746a62/go.mod h1:QrHmgG7p+3LWWFE6IxFqL3p0N7x8N/2cJASpCWRS3jg=
 github.com/tinylib/msgp v1.0.2/go.mod h1:+d+yLhGm8mzTaHzB+wgMYrodPfmZrzkirds8fDWklFE=
 github.com/tombuildsstuff/huawei-e5573-mifi-sdk-go v0.0.0-20180610110553-fe6e1c10b36d h1:gt7qoLuuaAdpBYJOd7w6lJjMglVO1x8v8axR5EW/x+8=
 github.com/tombuildsstuff/huawei-e5573-mifi-sdk-go v0.0.0-20180610110553-fe6e1c10b36d/go.mod h1:9HkaSk9lRiplVu1gb8lUKIvgXCJSXA77Qbo0x7bk0tU=

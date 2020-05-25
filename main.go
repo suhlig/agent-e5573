@@ -10,7 +10,7 @@ import (
 	"github.com/tombuildsstuff/huawei-e5573-mifi-sdk-go/mifi"
 )
 
-var versionNumber = "0.0.3"
+var versionNumber = "0.0.4"
 var e5573URL = flag.String("e5573-url", "http://192.168.8.1", "The endpoint of the E5573 device")
 var showVersion = flag.Bool("version", false, "Show the Application Version")
 var verbose = flag.Bool("verbose", false, "Produce verbose output")
