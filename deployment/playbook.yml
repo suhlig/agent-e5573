@@ -15,14 +15,14 @@
       mode: "0755"
     tags: [ copy, binary ]
 
-  - name: Systemd service is present
+  - name: Systemd timer is present
     template:
       src: "{{ program_name }}.timer.j2"
       dest: "/etc/systemd/system/{{ program_name }}.timer"
       mode: "0664"
     tags: systemd
 
-  - name: Systemd timer is present
+  - name: Systemd service is present
     template:
       src: "{{ program_name }}.service.j2"
       dest: "/etc/systemd/system/{{ program_name }}.service"
