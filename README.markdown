@@ -1,5 +1,9 @@
 `Agent E5573` collects some stats from the [Huawei E5573](https://en.wikipedia.org/wiki/Huawei_E5#Huawei_E5573) wireless router ("MiFi") and publishes them to an InfluxDB instance.
 
+# TODO
+
+* Use a complete influxdb-url with user, password and db - this makes config simpler
+
 # Synopsis
 
 ```command
