@@ -4,12 +4,9 @@ After=network-online.target
 
 [Service]
 Type=oneshot
-Environment=INFLUXDB_PASSWORD={{ influxdb_user_password }}
 ExecStart=/usr/local/bin/{{ program_name }} \
             --e5573-url http://192.168.8.1 \
-            --influxdb-url {{ 'https' if influxdb_tls else 'http' }}://{{ influxdb_host }}:{{ influxdb_port }} \
-            --influxdb-database {{ influxdb_database }} \
-            --influxdb-user {{ influxdb_user }} \
+            --influxdb-url '{{ influxdb_url }}' \
             --verbose
 
 [Install]

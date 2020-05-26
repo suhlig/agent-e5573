@@ -3,7 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
+	"net/url"
 	"os"
+	"path"
 	"time"
 
 	influx "github.com/influxdata/influxdb/client/v2"
@@ -12,12 +14,10 @@ import (
 
 var versionNumber = "0.0.4"
 var e5573URL = flag.String("e5573-url", "http://192.168.8.1", "The endpoint of the E5573 device")
+var influxURLFlag = flag.String("influxdb-url", "http://localhost:8086", "URL to the InfluxDB where samples are sent to")
 var showVersion = flag.Bool("version", false, "Show the Application Version")
 var verbose = flag.Bool("verbose", false, "Produce verbose output")
 var showHelp = flag.Bool("help", false, "Displays this message")
-var influxURL = flag.String("influxdb-url", "http://localhost:8086", "URL to the InfluxDB where samples are sent to")
-var influxDatabase = flag.String("influxdb-database", "", "InfluxDB database name where samples are written to")
-var influxUsername = flag.String("influxdb-user", "", "InfluxDB user name that can write samples to the given database.")
 
 func main() {
 	flag.Parse()
@@ -79,11 +79,21 @@ func main() {
 		fmt.Printf("Uploaded %.2f MiB\n", uploadedMiB)
 	}
 
-	if *influxDatabase != "" {
+	if *influxURLFlag != "" {
+		influxURL, err := url.Parse(*influxURLFlag)
+
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+
+		influxPassword, _ := influxURL.User.Password()
+		influxDatabase := path.Base(influxURL.Path)
+
 		influxClient, err := influx.NewHTTPClient(influx.HTTPConfig{
-			Addr:     *influxURL,
-			Username: *influxUsername,
-			Password: os.Getenv("INFLUXDB_PASSWORD"),
+			Addr:     fmt.Sprintf("%s://%s", influxURL.Scheme, influxURL.Host),
+			Username: influxURL.User.Username(),
+			Password: influxPassword,
 		})
 
 		if err != nil {
@@ -94,7 +104,7 @@ func main() {
 		tags := map[string]string{"hostname": hostName()}
 
 		bp, err := influx.NewBatchPoints(influx.BatchPointsConfig{
-			Database:  *influxDatabase,
+			Database:  influxDatabase,
 			Precision: "s",
 		})
 

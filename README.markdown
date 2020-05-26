@@ -1,18 +1,12 @@
 `Agent E5573` collects some stats from the [Huawei E5573](https://en.wikipedia.org/wiki/Huawei_E5#Huawei_E5573) wireless router ("MiFi") and publishes them to an InfluxDB instance.
 
-# TODO
-
-* Use a complete influxdb-url with user, password and db - this makes config simpler
-
 # Synopsis
 
 ```command
 $ export INFLUXDB_PASSWORD=s3cret
 $ agent-e5573 \
   --e5573-url http://192.168.8.1 \
-  --influxdb-url https://influxdb.example.com \
-  --influxdb-database e5573 \
-  --influxdb-user example.com
+  --influxdb-url https://alice:s3cret@influxdb.example.com/e5573
 ```
 
 Run it with `--verbose` and it will print its the stats to `STDOUT`:
@@ -21,9 +15,7 @@ Run it with `--verbose` and it will print its the stats to `STDOUT`:
 $ agent-e5573 \
   --verbose \
   --e5573-url http://192.168.8.1 \
-  --influxdb-url https://influxdb.example.com \
-  --influxdb-database e5573 \
-  --influxdb-user example.com
+  --influxdb-url https://alice:s3cret@influxdb.example.com/e5573
 Timestamp: 2020-05-11T19:12:21+02:00
 Battery: 1.00
 WiFi Users: 1
@@ -57,8 +49,7 @@ Regular deployment is done with Ansible. For fast iteration, the following appro
 
     ```command
     $ export AGENT_E5573_HOST=pi.example.com # where the agent will be running
-    $ export INFLUXDB_URL=https://influxdb.example.com:443 # where to push data
-    $ export INFLUXDB_PASSWORD="t0ps3cr3t" # top secret
+    $ export INFLUXDB_URL=https://alice:s3cret@influxdb.example.com/e5573 # where the agent pushes data to
     ```
 
 1. Optionally, if your target system is a Raspberry Pi <= 3, set the following variables on the build machine:
